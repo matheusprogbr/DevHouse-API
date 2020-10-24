@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
 const routes = express.Router();
 
 routes.get("/houses", (req, res) => {
   res.json({ message: "Hello World API" });
 });
 
-module.exports = routes;
+export default routes;
