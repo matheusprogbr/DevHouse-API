@@ -1,8 +1,8 @@
 import express from "express";
+import SessionController from "./controllers/SessionController";
 const routes = express.Router();
 
-routes.get("/houses", (req, res) => {
-  res.json({ message: "Hello World API" });
-});
+routes.post("/session", SessionController.store);
+
 
 export default routes;
