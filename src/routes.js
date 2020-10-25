@@ -3,6 +3,7 @@ import multer from "multer";
 import uploadConfig from "./config/upload";
 import SessionController from "./controllers/SessionController";
 import HouseController from "./controllers/HouseController";
+import DashboardController from "./controllers/DashboardController";
 const routes = express.Router();
 const upload = multer(uploadConfig);
 
@@ -12,6 +13,8 @@ routes.get("/houses", HouseController.index);
 routes.post("/houses",upload.single("thumbnail") ,HouseController.store);
 routes.put("/houses/:id", upload.single("thumbnail") ,HouseController.update);
 routes.delete("/houses/:id", HouseController.delete);
+
+routes.get("/dashboard", DashboardController.show);
 
 
 export default routes;
