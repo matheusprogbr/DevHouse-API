@@ -6,8 +6,11 @@ import HouseController from "./controllers/HouseController";
 const routes = express.Router();
 const upload = multer(uploadConfig);
 
-routes.post("/session", SessionController.store);
-routes.post("/house",upload.single("thumbnail") ,HouseController.store);
+routes.post("/sessions", SessionController.store);
+
+routes.get("/houses", HouseController.index);
+routes.post("/houses",upload.single("thumbnail") ,HouseController.store);
+routes.put("/houses/:id", upload.single("thumbnail") ,HouseController.update);
 
 
 export default routes;
