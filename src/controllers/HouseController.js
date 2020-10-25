@@ -1,4 +1,5 @@
 import House from "../models/House";
+import User from "../models/User";
 
 const HouseController = {
 
@@ -48,6 +49,11 @@ const HouseController = {
     const { id } = req.params;
     const { user_id } = req.headers;
     const { filename } = req.file;
+
+    const user = await User.findById(user_id);
+    const houses = await House.findById(id);
+
+    if(String(user._id) !== String(houses.user)) return res.status(401).json({ error: "Not allowed to acess this route!"});
     
     const data = {
       user_id,
@@ -56,6 +62,20 @@ const HouseController = {
     };
 
     const update = await House.updateOne({_id:id}, data);
+
+    return res.send();
+  },
+
+  delete: async (req,res) => {
+    const { id } = req.params;
+    const { user_id } = req.headers;
+
+    const user = await User.findById(user_id);
+    const house = await House.findById(id);
+
+    if(String(user._id) !== String(house.user)) return res.status(401).json({ error: "It is not allowed to delete a document!"});
+
+    await House.deleteOne({_id:id});
 
     return res.send();
   }
