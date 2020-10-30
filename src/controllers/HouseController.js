@@ -1,6 +1,8 @@
 import House from "../models/House";
 import User from "../models/User";
 
+import * as Yup from "yup";
+
 const HouseController = {
 
   index: async (req,res) => {
@@ -27,9 +29,18 @@ const HouseController = {
   },
 
   store: async (req,res) => {
+    const schema = Yup.object().shape({
+      description: Yup.string().required(),
+      price: Yup.number().required(),
+      location: Yup.string().required(),
+      status: Yup.boolean().required()
+    })
+
     const {filename} = req.file;
     const {description, price, location, status } = req.body;
     const { user_id } = req.headers;
+
+    if(!(await schema.isValid(req.body))) return res.status(400).json({error: "Validation Fail!"});
 
     const data = {
       user: user_id,
@@ -46,12 +57,21 @@ const HouseController = {
   },
 
   update: async (req,res) => {
+    const schema = Yup.object().shape({
+      description: Yup.string().required(),
+      price: Yup.number().required(),
+      location: Yup.string().required(),
+      status: Yup.boolean().required()
+    })
+
     const { id } = req.params;
     const { user_id } = req.headers;
     const { filename } = req.file;
 
     const user = await User.findById(user_id);
     const houses = await House.findById(id);
+
+    if(!(await schema.isValid(req.body))) return res.status(400).json({error: "Validation Fail!"});
 
     if(String(user._id) !== String(houses.user)) return res.status(401).json({ error: "Not allowed to acess this route!"});
     
