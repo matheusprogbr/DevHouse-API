@@ -12,6 +12,6 @@ server.use("/files", express.static(path.resolve(__dirname,"..","uploads")));
 server.use(express.json());
 server.use(routes);
 
-server.listen(5000, () => {
+server.listen(3333, () => {
   console.log("Server is running!");
 });
